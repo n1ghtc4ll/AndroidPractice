@@ -11,27 +11,38 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.androidpractice.AnimeDetails
 import com.example.androidpractice.MainList
-import com.example.androidpractice.core.model.MockData
+import com.example.androidpractice.anime_list.presentation.viewModel.AnimeListViewModel
 import com.example.androidpractice.core.model.Anime
+import com.example.androidpractice.core.model.MockData
 import com.example.androidpractice.navigation.Route
 import com.example.androidpractice.navigation.TopLevelBackStack
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 
 @Composable
-fun AnimeListScreen(topLevelBackStack: TopLevelBackStack<Route>) {
-    val animeTitles = remember { MockData.getAnimeList() }
+fun AnimeListScreen(
+    topLevelBackStack: TopLevelBackStack<Route>,
+    viewModel: AnimeListViewModel = koinViewModel()
+) {
+    val animeTitles by viewModel.animeList.collectAsState()
 
-    LazyColumn() {
+    AnimeListContent(animeTitles) { topLevelBackStack.add(AnimeDetails(it)) }
+}
+
+@Composable
+fun AnimeListContent(animeTitles: List<Anime>, onAnimeClick: (Anime) -> Unit) {
+    LazyColumn {
         animeTitles.forEach { anime ->
             item(key = anime.id) {
-                AnimeListItem(anime) { topLevelBackStack.add(AnimeDetails(anime)) }
+                AnimeListItem(anime) { onAnimeClick(anime) }
             }
         }
     }
@@ -82,5 +93,5 @@ fun AnimeListItem(anime: Anime, onAnimeClick: (Anime) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun AnimeListScreenPreview(){
-    AnimeListScreen(TopLevelBackStack<Route>(MainList))
+    AnimeListContent(MockData.getAnimeList()) { }
 }

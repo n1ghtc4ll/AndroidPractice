@@ -5,7 +5,7 @@ object MockData {
         Anime(
             id = 185,
             title = "Initial D First Stage",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/1384/127972.jpg",
+            imageUrl = "https://myanimelist.net/images/anime/1384/127972l.jpg",
             type = "TV",
             genres = listOf("Action", "Drama", "Racing"),
             episodes = 26,
@@ -15,7 +15,7 @@ object MockData {
         Anime(
             id = 245,
             title = "Great Teacher Onizuka",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/13/11436.jpg",
+            imageUrl = 	"https://myanimelist.net/images/anime/13/11460l.jpg",
             type = "TV",
             genres = listOf("Comedy", "Drama", "School"),
             episodes = 43,
@@ -25,7 +25,7 @@ object MockData {
         Anime(
             id = 339,
             title = "Serial Experiments Lain",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/1199/113488.jpg",
+            imageUrl = 	"https://myanimelist.net/images/anime/1718/91550l.jpg",
             type = "TV",
             genres = listOf("Drama", "Mystery", "Psychological", "Sci-Fi"),
             episodes = 13,
@@ -35,7 +35,7 @@ object MockData {
         Anime(
             id = 205,
             title = "Samurai Champloo",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/11/29117.jpg",
+            imageUrl = "https://myanimelist.net/images/anime/1370/135212l.jpg",
             type = "TV",
             genres = listOf("Action", "Adventure", "Comedy", "Samurai"),
             episodes = 26,
@@ -45,7 +45,7 @@ object MockData {
         Anime(
             id = 30,
             title = "Neon Genesis Evangelion",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/1314/108941.jpg",
+            imageUrl = "https://myanimelist.net/images/anime/1314/108941l.jpg",
             type = "TV",
             genres = listOf("Action", "Drama", "Mecha", "Psychological", "Sci-Fi"),
             episodes = 26,
@@ -55,7 +55,7 @@ object MockData {
         Anime(
             id = 43,
             title = "Ghost in the Shell",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/10/82594.jpg",
+            imageUrl = 	"https://myanimelist.net/images/anime/10/82594l.jpg",
             type = "Movie",
             genres = listOf("Action", "Mecha", "Police", "Psychological", "Sci-Fi"),
             episodes = 1,
@@ -65,7 +65,7 @@ object MockData {
         Anime(
             id = 468,
             title = "Ghost in the Shell 2: Innocence",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/1054/111961.jpg",
+            imageUrl = "https://myanimelist.net/images/anime/10/75628l.jpg",
             type = "Movie",
             genres = listOf("Action", "Mecha", "Police", "Psychological", "Sci-Fi"),
             episodes = 1,
@@ -75,7 +75,7 @@ object MockData {
         Anime(
             id = 4898,
             title = "Black Butler",
-            imageUrl = "https://cdn.myanimelist.net/images/anime/5/4778.jpg",
+            imageUrl = "https://myanimelist.net/images/anime/1467/137783l.jpg",
             type = "TV",
             genres = listOf("Action", "Comedy", "Demons", "Fantasy", "Historical"),
             episodes = 24,

@@ -9,11 +9,15 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.viewmodel.navigation3.ViewModelStoreNavEntryDecorator
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import com.example.androidpractice.anime_list.presentation.screen.AnimeDetailsDialog
@@ -58,6 +62,11 @@ fun MainScreen() {
             backStack = topLevelBackStack.backStack,
             onBack = { topLevelBackStack.removeLast() },
             modifier = Modifier.padding(paddingValues),
+            entryDecorators = listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator()
+            ),
+            sceneStrategy = DialogSceneStrategy(),
             entryProvider = entryProvider {
                 entry<MainList> {
                     AnimeListScreen(topLevelBackStack)
@@ -68,7 +77,7 @@ fun MainScreen() {
                 entry<AnimeDetails>(
                     metadata = DialogSceneStrategy.dialog(DialogProperties())
                 ) {
-                    //AnimeDetailsDialog()
+                    AnimeDetailsDialog(it.anime, topLevelBackStack)
                 }
             }
         )
