@@ -2,54 +2,91 @@ package com.example.androidpractice.anime_list.presentation.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.androidpractice.AnimeDetails
-import com.example.androidpractice.MainList
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.androidpractice.anime_list.presentation.viewModel.AnimeListViewModel
-import com.example.androidpractice.core.model.Anime
-import com.example.androidpractice.core.model.MockData
-import com.example.androidpractice.navigation.Route
-import com.example.androidpractice.navigation.TopLevelBackStack
+import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.MockData
+import com.example.androidpractice.anime_list.presentation.model.AnimeListViewState
 import org.koin.compose.viewmodel.koinViewModel
-import java.util.Locale
 
 @Composable
-fun AnimeListScreen(
-    topLevelBackStack: TopLevelBackStack<Route>,
-    viewModel: AnimeListViewModel = koinViewModel()
-) {
-    val animeTitles by viewModel.animeList.collectAsState()
+fun AnimeListScreen() {
+    val viewModel = koinViewModel<AnimeListViewModel>()
+    val state by viewModel.viewState.collectAsStateWithLifecycle()
 
-    AnimeListContent(animeTitles) { topLevelBackStack.add(AnimeDetails(it)) }
+    AnimeListContent(
+        state.state,
+        viewModel::onAnimeClick,
+        viewModel::onRetryClick
+    )
 }
 
 @Composable
-fun AnimeListContent(animeTitles: List<Anime>, onAnimeClick: (Anime) -> Unit) {
-    LazyColumn {
-        animeTitles.forEach { anime ->
-            item(key = anime.id) {
-                AnimeListItem(anime) { onAnimeClick(anime) }
+fun AnimeListContent(
+    state: AnimeListViewState.State,
+    onAnimeClick: (AnimeUiModel) -> Unit = {},
+    onRetryClick: () -> Unit = {}
+) {
+    when (state) {
+        is AnimeListViewState.State.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        is AnimeListViewState.State.Error -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = state.error, color = Color.Red)
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = onRetryClick) { Text("Повторить") }
+            }
+        }
+
+        is AnimeListViewState.State.Success -> {
+            LazyColumn {
+                state.data.forEach { anime ->
+                    item(key = anime.id) {
+                        AnimeListItem(anime) { onAnimeClick(anime) }
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun AnimeListItem(anime: Anime, onAnimeClick: (Anime) -> Unit) {
+fun AnimeListItem(
+    anime: AnimeUiModel,
+    onAnimeClick: (AnimeUiModel) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,7 +105,7 @@ fun AnimeListItem(anime: Anime, onAnimeClick: (Anime) -> Unit) {
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = "%.2f".format(Locale.ENGLISH, anime.score),
+                text = anime.score,
                 modifier = Modifier.padding(start = 8.dp),
                 style = MaterialTheme.typography.labelLarge
             )
@@ -82,7 +119,7 @@ fun AnimeListItem(anime: Anime, onAnimeClick: (Anime) -> Unit) {
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = "Genres: ${anime.genres.joinToString()}",
+            text = "Genres: ${anime.genres}",
             style = MaterialTheme.typography.bodyMedium
         )
 
@@ -92,6 +129,8 @@ fun AnimeListItem(anime: Anime, onAnimeClick: (Anime) -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun AnimeListScreenPreview(){
-    AnimeListContent(MockData.getAnimeList()) { }
+fun AnimeListScreenPreview() {
+    AnimeListContent(
+        AnimeListViewState.State.Success(MockData.getAnimeList())
+    )
 }

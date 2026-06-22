@@ -2,10 +2,6 @@ package com.example.androidpractice.anime_list.presentation.screen
 
 import android.content.Context
 import android.content.Intent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,39 +23,53 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
-import com.example.androidpractice.AnimeDetails
 import com.example.androidpractice.R
-import com.example.androidpractice.core.model.Anime
-import com.example.androidpractice.core.model.MockData
+import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.MockData
+import com.example.androidpractice.anime_list.presentation.model.AnimeDetailsViewState
+import com.example.androidpractice.anime_list.presentation.viewModel.AnimeDetailsViewModel
 import com.example.androidpractice.navigation.Route
 import com.example.androidpractice.navigation.TopLevelBackStack
-import java.util.Locale
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
+import org.koin.viewmodel.factory.KoinViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailsDialog(
-    anime: Anime,
-    topLevelBackStack: TopLevelBackStack<Route>
+    anime: AnimeUiModel
 ) {
-    ModalBottomSheet(onDismissRequest = { topLevelBackStack.removeLast() }) {
-        AnimeDetailsContent(anime)
+    val viewModel = koinViewModel<AnimeDetailsViewModel> {
+        parametersOf(anime)
+    }
+    val state by viewModel.viewState.collectAsStateWithLifecycle()
+
+    ModalBottomSheet(onDismissRequest = { viewModel.onBack() }) {
+        AnimeDetailsContent(state, viewModel::onFavouriteChanged)
     }
 }
 
 @Composable
-fun AnimeDetailsContent(anime: Anime) {
+fun AnimeDetailsContent(
+    state: AnimeDetailsViewState,
+    onFavouriteChanged: (Boolean) -> Unit = {}
+) {
+
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -77,13 +90,25 @@ fun AnimeDetailsContent(anime: Anime) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = anime.title,
+                text = state.anime.title,
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.weight(1f)
             )
 
             IconButton(
-                onClick = { shareText(context, anime.title) },
+                onClick = { onFavouriteChanged(state.isFavourite) },
+                modifier = Modifier.size(40.dp)
+            ) {
+                Icon(
+                    imageVector =
+                        if (state.isFavourite) Icons.Default.Favorite
+                        else Icons.Default.FavoriteBorder,
+                    contentDescription = null
+                )
+            }
+            
+            IconButton(
+                onClick = { shareText(context, state.anime.url) },
                 modifier = Modifier.size(40.dp)
             ) {
                 Icon(imageVector = Icons.Default.Share, contentDescription = null)
@@ -100,23 +125,25 @@ fun AnimeDetailsContent(anime: Anime) {
             }
         ) {
             Column(
-                modifier = Modifier.padding(end = 4.dp).weight(3f)
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .weight(3f)
             ) {
                 val overviewStyle = MaterialTheme.typography.titleMedium
                 val bottomPadding = Modifier.padding(bottom = 8.dp)
 
                 Text(
-                    text = anime.type,
+                    text = state.anime.type,
                     style = overviewStyle,
                     modifier = bottomPadding,
                 )
                 Text(
-                    text = "Episodes: ${anime.episodes}",
+                    text = "Episodes: ${state.anime.episodes}",
                     style = overviewStyle,
                     modifier = bottomPadding,
                 )
                 Text(
-                    text = "Genres: ${anime.genres.joinToString()}",
+                    text = "Genres: ${state.anime.genres}",
                     style = overviewStyle,
                     modifier = bottomPadding,
                 )
@@ -128,23 +155,25 @@ fun AnimeDetailsContent(anime: Anime) {
                         modifier = Modifier.padding(end = 4.dp)
                     )
                     Text(
-                        text = "%.2f".format(Locale.ENGLISH, anime.score),
+                        text = state.anime.score,
                         style = MaterialTheme.typography.titleMedium,
                     )
                 }
             }
             AsyncImage(
-                model = anime.imageUrl,
+                model = state.anime.imageUrl,
                 contentDescription = null,
-                modifier = Modifier.weight(2f),
-                contentScale = ContentScale.FillWidth,
-                placeholder = painterResource(R.drawable.image_placeholder),
-                error = painterResource(R.drawable.image_placeholder)
+                modifier = Modifier.fillMaxWidth()
+                    .aspectRatio(3f / 4f)
+                    .weight(2f),
+                contentScale = ContentScale.Fit,
+                placeholder = ColorPainter(Color.LightGray),
+                error = ColorPainter(Color.Gray)
             )
         }
 
         Text(
-            text = anime.description,
+            text = state.anime.description,
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.constrainAs(description) {
                 top.linkTo(overviewBlock.bottom, margin = 8.dp)
@@ -166,5 +195,5 @@ fun shareText(context: Context, text: String) {
 @Preview(showBackground = true)
 @Composable
 fun AnimeDetailsDialogPreview() {
-    AnimeDetailsContent(MockData.getAnimeList().first())
+    AnimeDetailsContent(AnimeDetailsViewState(MockData.getAnimeList().first()))
 }
