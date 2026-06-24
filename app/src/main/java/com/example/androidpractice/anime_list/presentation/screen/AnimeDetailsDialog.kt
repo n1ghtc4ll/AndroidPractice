@@ -67,7 +67,7 @@ fun AnimeDetailsDialog(
 @Composable
 fun AnimeDetailsContent(
     state: AnimeDetailsViewState,
-    onFavouriteChanged: (Boolean) -> Unit = {}
+    onFavouriteChanged: () -> Unit = {}
 ) {
 
     ConstraintLayout(
@@ -96,7 +96,7 @@ fun AnimeDetailsContent(
             )
 
             IconButton(
-                onClick = { onFavouriteChanged(state.isFavourite) },
+                onClick = { onFavouriteChanged() },
                 modifier = Modifier.size(40.dp)
             ) {
                 Icon(

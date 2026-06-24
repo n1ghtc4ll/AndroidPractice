@@ -21,8 +21,12 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.androidpractice.anime_list.presentation.screen.AnimeDetailsDialog
 import com.example.androidpractice.anime_list.presentation.screen.AnimeListScreen
 import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime_list.presentation.screen.AnimeFavouritesScreen
+import com.example.androidpractice.anime_list.presentation.screen.AnimeFiltersDialog
+import com.example.androidpractice.anime_list.presentation.viewModel.AnimeListViewModel
 import com.example.androidpractice.navigation.Route
 import com.example.androidpractice.navigation.TopLevelBackStack
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.java.KoinJavaComponent.inject
 
 interface TopLevelRoute: Route {
@@ -39,9 +43,12 @@ data object Favourite: TopLevelRoute {
 
 data class AnimeDetails(val anime: AnimeUiModel): Route
 
+data object AnimeListFilter: Route
+
 @Composable
 fun MainScreen() {
     val topLevelBackStack by inject<TopLevelBackStack<Route>>(TopLevelBackStack::class.java)
+    val animeListViewModel = koinViewModel<AnimeListViewModel>()
 
     Scaffold(
         bottomBar = {
@@ -67,15 +74,24 @@ fun MainScreen() {
             sceneStrategy = DialogSceneStrategy(),
             entryProvider = entryProvider {
                 entry<MainList> {
-                    AnimeListScreen()
+                    AnimeListScreen(animeListViewModel)
                 }
                 entry<Favourite> {
-
+                    AnimeFavouritesScreen(
+                        onAnimeClick = { anime ->
+                            topLevelBackStack.add(AnimeDetails(anime))
+                        }
+                    )
                 }
                 entry<AnimeDetails>(
                     metadata = DialogSceneStrategy.dialog(DialogProperties())
                 ) {
                     AnimeDetailsDialog(it.anime)
+                }
+                entry<AnimeListFilter>(
+                    metadata = DialogSceneStrategy.dialog(DialogProperties())
+                ) {
+                    AnimeFiltersDialog(animeListViewModel)
                 }
             }
         )

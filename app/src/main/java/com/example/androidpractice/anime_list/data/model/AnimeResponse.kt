@@ -38,8 +38,8 @@ data class JpgImageUrlsDto(
 
 @Serializable
 data class AiredDto(
-    val from: String?,
-    val to: String?
+    @SerialName("from") val from: String?,
+    @SerialName("to") val to: String?
 )
 
 @Serializable
