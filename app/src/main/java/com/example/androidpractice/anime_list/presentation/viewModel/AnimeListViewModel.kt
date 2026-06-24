@@ -1,15 +1,13 @@
 package com.example.androidpractice.anime_list.presentation.viewModel
 
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidpractice.AnimeDetails
 import com.example.androidpractice.AnimeListFilter
 import com.example.androidpractice.anime_list.domain.interactor.AnimeInteractor
 import com.example.androidpractice.anime_list.domain.model.AnimeEntity
-import com.example.androidpractice.anime_list.domain.model.AnimeFilter
+import com.example.androidpractice.anime_list.domain.model.AnimeFilterSettings
 import com.example.androidpractice.anime_list.presentation.cache.FilterBadgeCache
-import com.example.androidpractice.anime_list.presentation.model.AnimeFilterModel
 import com.example.androidpractice.anime_list.presentation.model.AnimeListViewState
 import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
 import com.example.androidpractice.navigation.Route
@@ -30,7 +28,19 @@ class AnimeListViewModel(
     val isBadgeVisible = badgeCache.isBadgeVisible
 
     init {
-        loadAnimeList()
+        viewModelScope.launch {
+            interactor.getFilterSettings().collect { domainSettings ->
+
+                mutableState.update {
+                    it.copy(activeFilters = domainSettings, dialogFilters = domainSettings)
+                }
+
+                val hasFilters = domainSettings != AnimeFilterSettings()
+                badgeCache.updateBadgeState(hasFilters)
+
+                loadAnimeList()
+            }
+        }
     }
 
     fun loadAnimeList() {
@@ -54,7 +64,7 @@ class AnimeListViewModel(
         }
     }
 
-    fun updateListFilters(newFilters: AnimeFilterModel) {
+    fun updateListFilters(newFilters: AnimeFilterSettings) {
         mutableState.update {
             it.copy(dialogFilters = newFilters)
         }
@@ -69,13 +79,9 @@ class AnimeListViewModel(
         val currentState = mutableState.value
 
         if (currentState.activeFilters != currentState.dialogFilters) {
-            mutableState.update {
-                it.copy(activeFilters = it.dialogFilters)
+            viewModelScope.launch {
+                interactor.saveFilterSettings(currentState.dialogFilters)
             }
-            val hasFilters = currentState.dialogFilters != AnimeFilterModel()
-            badgeCache.updateBadgeState(hasFilters)
-
-            loadAnimeList()
         }
 
         topLevelBackStack.removeLast()

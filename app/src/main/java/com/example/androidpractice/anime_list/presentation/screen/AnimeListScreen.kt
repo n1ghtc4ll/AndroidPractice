@@ -1,6 +1,5 @@
 package com.example.androidpractice.anime_list.presentation.screen
 
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +15,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -45,22 +44,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.core.app.ComponentActivity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.androidpractice.anime_list.presentation.viewModel.AnimeListViewModel
 import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
 import com.example.androidpractice.MockData
 import com.example.androidpractice.anime_list.domain.model.AnimeFilter
+import com.example.androidpractice.anime_list.domain.model.AnimeFilterSettings
 import com.example.androidpractice.anime_list.domain.model.AnimeRating
 import com.example.androidpractice.anime_list.domain.model.AnimeType
 import com.example.androidpractice.anime_list.domain.model.FilterSetting
-import com.example.androidpractice.anime_list.presentation.model.AnimeFilterModel
 import com.example.androidpractice.anime_list.presentation.model.AnimeListViewState
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AnimeListScreen(viewModel: AnimeListViewModel) {
@@ -132,10 +128,8 @@ fun AnimeListContent(
 
                 is AnimeListViewState.State.Success -> {
                     LazyColumn {
-                        state.data.forEach { anime ->
-                            item(key = anime.id) {
-                                AnimeListItem(anime) { onAnimeClick(anime) }
-                            }
+                        items(state.data) { anime ->
+                            AnimeListItem(anime) { onAnimeClick(anime) }
                         }
                     }
                 }
@@ -204,7 +198,7 @@ fun AnimeFiltersDialog(viewModel: AnimeListViewModel) {
 @Composable
 fun AnimeFiltersDialog(
     state: AnimeListViewState,
-    onFiltersChange: (AnimeFilterModel) -> Unit,
+    onFiltersChange: (AnimeFilterSettings) -> Unit,
     onApply: () -> Unit = {},
     onDismiss: () -> Unit = {}
 ) {

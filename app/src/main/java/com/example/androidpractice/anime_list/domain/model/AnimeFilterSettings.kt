@@ -1,5 +1,11 @@
 package com.example.androidpractice.anime_list.domain.model
 
+data class AnimeFilterSettings(
+    val type: AnimeType = AnimeType.ALL,
+    val filter: AnimeFilter = AnimeFilter.ALL,
+    val rating: AnimeRating = AnimeRating.ALL
+)
+
 enum class AnimeFilter(override val apiValue: String?, override val uiName: String): FilterSetting {
     ALL(null, "All"),
     AIRING("airing", "Top Airing"),

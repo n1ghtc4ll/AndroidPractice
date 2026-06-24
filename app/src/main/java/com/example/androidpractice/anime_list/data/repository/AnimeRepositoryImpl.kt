@@ -2,10 +2,13 @@ package com.example.androidpractice.anime_list.data.repository
 
 import com.example.androidpractice.anime_list.data.api.AnimeApi
 import com.example.androidpractice.anime_list.data.dao.AnimeDao
+import com.example.androidpractice.anime_list.data.datastore.AnimeFilterDataStore
 import com.example.androidpractice.anime_list.data.mapper.AnimeDtoToEntityMapper
 import com.example.androidpractice.anime_list.data.mapper.AnimeFavouriteMapper
+import com.example.androidpractice.anime_list.data.mapper.FilterSettingsMapper
 import com.example.androidpractice.anime_list.domain.model.AnimeEntity
 import com.example.androidpractice.anime_list.domain.model.AnimeFilter
+import com.example.androidpractice.anime_list.domain.model.AnimeFilterSettings
 import com.example.androidpractice.anime_list.domain.model.AnimeRating
 import com.example.androidpractice.anime_list.domain.model.AnimeType
 import com.example.androidpractice.anime_list.domain.repository.AnimeRepository
@@ -17,8 +20,10 @@ import kotlinx.coroutines.withContext
 class AnimeRepositoryImpl(
     private val api: AnimeApi,
     private val dao: AnimeDao,
+    private val filterDataStore: AnimeFilterDataStore,
     private val dtoMapper: AnimeDtoToEntityMapper,
-    private val favouriteMapper: AnimeFavouriteMapper
+    private val favouriteMapper: AnimeFavouriteMapper,
+    private val filterMapper: FilterSettingsMapper
 ) : AnimeRepository {
     override suspend fun getAnimeById(id: Int): AnimeEntity? = withContext(Dispatchers.IO) {
         val response = api.getAnimeById(id)
@@ -55,5 +60,19 @@ class AnimeRepositoryImpl(
 
     override fun isFavourite(id: Int): Flow<Boolean> {
         return dao.isFavourite(id)
+    }
+
+    override fun getFilterSettings(): Flow<AnimeFilterSettings> {
+        return filterDataStore.filterStringsFlow.map { (type, filter, rating) ->
+            filterMapper.mapToDomain(type, filter, rating)
+        }
+    }
+
+    override suspend fun saveFilterSettings(settings: AnimeFilterSettings) {
+        filterDataStore.saveFilterStrings(
+            type = settings.type.name,
+            filter = settings.filter.name,
+            rating = settings.rating.name
+        )
     }
 }

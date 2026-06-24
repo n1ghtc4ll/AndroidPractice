@@ -8,7 +8,9 @@ import java.time.OffsetDateTime
 
 class AnimeDtoToEntityMapper {
     fun mapList(list: List<AnimeDto>) : List<AnimeEntity> {
-        return list.mapNotNull { anime -> mapItem(anime) }
+        return list
+            .mapNotNull { anime -> mapItem(anime) }
+            .distinctBy { it.malId }
     }
 
     fun mapItem(item: AnimeDto): AnimeEntity? = with(item) {

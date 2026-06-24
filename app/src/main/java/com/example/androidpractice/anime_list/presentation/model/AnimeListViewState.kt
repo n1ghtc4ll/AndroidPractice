@@ -1,11 +1,11 @@
 package com.example.androidpractice.anime_list.presentation.model
 
-import com.example.androidpractice.anime_list.domain.model.AnimeFilter
+import com.example.androidpractice.anime_list.domain.model.AnimeFilterSettings
 
 data class AnimeListViewState(
     val state: State = State.Loading,
-    val activeFilters: AnimeFilterModel = AnimeFilterModel(),
-    val dialogFilters: AnimeFilterModel = AnimeFilterModel()
+    val activeFilters: AnimeFilterSettings = AnimeFilterSettings(),
+    val dialogFilters: AnimeFilterSettings = AnimeFilterSettings()
 ) {
     sealed interface State {
         object Loading : State

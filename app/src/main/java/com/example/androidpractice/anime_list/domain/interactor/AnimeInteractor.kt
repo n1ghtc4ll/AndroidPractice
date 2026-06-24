@@ -2,9 +2,11 @@ package com.example.androidpractice.anime_list.domain.interactor
 
 import com.example.androidpractice.anime_list.domain.model.AnimeEntity
 import com.example.androidpractice.anime_list.domain.model.AnimeFilter
+import com.example.androidpractice.anime_list.domain.model.AnimeFilterSettings
 import com.example.androidpractice.anime_list.domain.model.AnimeRating
 import com.example.androidpractice.anime_list.domain.model.AnimeType
 import com.example.androidpractice.anime_list.domain.repository.AnimeRepository
+import kotlinx.coroutines.flow.Flow
 
 class AnimeInteractor(
     private val repository: AnimeRepository
@@ -23,4 +25,7 @@ class AnimeInteractor(
     suspend fun deleteFavouriteAnime(id: Int) = repository.deleteFavouriteAnime(id)
 
     fun isFavourite(id: Int) = repository.isFavourite(id)
+    fun getFilterSettings(): Flow<AnimeFilterSettings> = repository.getFilterSettings()
+
+    suspend fun saveFilterSettings(settings: AnimeFilterSettings) = repository.saveFilterSettings(settings)
 }
