@@ -1,8 +1,8 @@
-package com.example.androidpractice.anime_list.presentation.viewModel
+package com.example.androidpractice.anime.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.androidpractice.anime_list.presentation.model.AnimeDetailsViewState
-import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime.presentation.model.AnimeDetailsViewState
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.navigation.TopLevelBackStack
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

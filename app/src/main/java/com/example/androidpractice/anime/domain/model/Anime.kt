@@ -1,9 +1,8 @@
-package com.example.androidpractice.anime_list.domain.model
+package com.example.androidpractice.anime.domain.model
 
-import com.example.androidpractice.anime_list.data.model.AnimeImagesDto
 import java.time.LocalDate
 
-data class AnimeEntity(
+data class Anime(
     val malId: Int,
     val url: String,
     val imageUrl: String?,

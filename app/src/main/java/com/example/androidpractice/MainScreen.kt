@@ -18,9 +18,9 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
-import com.example.androidpractice.anime_list.presentation.screen.AnimeDetailsDialog
-import com.example.androidpractice.anime_list.presentation.screen.AnimeListScreen
-import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime.presentation.screen.AnimeDetailsDialog
+import com.example.androidpractice.anime.presentation.screen.AnimeListScreen
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.navigation.Route
 import com.example.androidpractice.navigation.TopLevelBackStack
 import org.koin.java.KoinJavaComponent.inject

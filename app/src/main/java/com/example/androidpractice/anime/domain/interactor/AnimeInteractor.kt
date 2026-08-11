@@ -1,6 +1,6 @@
-package com.example.androidpractice.anime_list.domain.interactor
+package com.example.androidpractice.anime.domain.interactor
 
-import com.example.androidpractice.anime_list.domain.repository.AnimeRepository
+import com.example.androidpractice.anime.domain.repository.AnimeRepository
 
 class AnimeInteractor(
     private val repository: AnimeRepository

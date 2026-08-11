@@ -1,18 +1,18 @@
-package com.example.androidpractice.anime_list.data.mapper
+package com.example.androidpractice.anime.data.mapper
 
-import com.example.androidpractice.anime_list.data.model.AnimeDto
-import com.example.androidpractice.anime_list.domain.model.AiredData
-import com.example.androidpractice.anime_list.domain.model.AnimeEntity
+import com.example.androidpractice.anime.data.model.AnimeDto
+import com.example.androidpractice.anime.domain.model.AiredData
+import com.example.androidpractice.anime.domain.model.Anime
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
 class AnimeDtoToEntityMapper {
-    fun mapList(list: List<AnimeDto>) : List<AnimeEntity> {
+    fun mapList(list: List<AnimeDto>) : List<Anime> {
         return list.mapNotNull { anime -> mapItem(anime) }
     }
 
-    fun mapItem(item: AnimeDto): AnimeEntity? = with(item) {
-        AnimeEntity(
+    fun mapItem(item: AnimeDto): Anime? = with(item) {
+        Anime(
             malId = malId ?: return null,
             url = url.orEmpty(),
             imageUrl = images?.jpg?.imageUrl,

@@ -1,7 +1,7 @@
 package com.example.androidpractice
 
 import android.app.Application
-import com.example.androidpractice.anime_list.di.animeFeatureModule
+import com.example.androidpractice.anime.di.animeFeatureModule
 import com.example.androidpractice.di.mainModule
 import com.example.androidpractice.di.networkModule
 

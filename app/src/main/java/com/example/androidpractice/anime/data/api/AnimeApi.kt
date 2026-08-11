@@ -1,7 +1,7 @@
-package com.example.androidpractice.anime_list.data.api
+package com.example.androidpractice.anime.data.api
 
-import com.example.androidpractice.anime_list.data.model.AnimeDto
-import com.example.androidpractice.anime_list.data.model.Response
+import com.example.androidpractice.anime.data.model.AnimeDto
+import com.example.androidpractice.anime.data.model.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 

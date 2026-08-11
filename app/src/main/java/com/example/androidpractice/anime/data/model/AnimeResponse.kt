@@ -1,4 +1,4 @@
-package com.example.androidpractice.anime_list.data.model
+package com.example.androidpractice.anime.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,12 +1,12 @@
-package com.example.androidpractice.anime_list.presentation.viewModel
+package com.example.androidpractice.anime.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidpractice.AnimeDetails
-import com.example.androidpractice.anime_list.domain.interactor.AnimeInteractor
-import com.example.androidpractice.anime_list.domain.model.AnimeEntity
-import com.example.androidpractice.anime_list.presentation.model.AnimeListViewState
-import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime.domain.interactor.AnimeInteractor
+import com.example.androidpractice.anime.domain.model.Anime
+import com.example.androidpractice.anime.presentation.model.AnimeListViewState
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.navigation.Route
 import com.example.androidpractice.navigation.TopLevelBackStack
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,7 +49,7 @@ class AnimeListViewModel(
 
     fun updateState(state: AnimeListViewState.State) = mutableState.update { it.copy(state = state) }
 
-    fun mapToUI(animeList: List<AnimeEntity>): List<AnimeUiModel> = animeList.map { 
+    fun mapToUI(animeList: List<Anime>): List<AnimeUiModel> = animeList.map {
         anime -> AnimeUiModel(
             id = anime.malId.toString(),
             title = anime.title,

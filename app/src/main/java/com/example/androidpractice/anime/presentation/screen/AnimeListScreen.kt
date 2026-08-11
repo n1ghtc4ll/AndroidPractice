@@ -1,4 +1,4 @@
-package com.example.androidpractice.anime_list.presentation.screen
+package com.example.androidpractice.anime.presentation.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.androidpractice.anime_list.presentation.viewModel.AnimeListViewModel
-import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime.presentation.viewModel.AnimeListViewModel
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.MockData
-import com.example.androidpractice.anime_list.presentation.model.AnimeListViewState
+import com.example.androidpractice.anime.presentation.model.AnimeListViewState
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

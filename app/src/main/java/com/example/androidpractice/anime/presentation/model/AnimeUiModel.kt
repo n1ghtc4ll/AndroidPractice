@@ -1,4 +1,4 @@
-package com.example.androidpractice.anime_list.presentation.model
+package com.example.androidpractice.anime.presentation.model
 
 data class AnimeUiModel(
     val id: String,

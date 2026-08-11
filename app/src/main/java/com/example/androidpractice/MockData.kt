@@ -1,6 +1,6 @@
 package com.example.androidpractice
 
-import com.example.androidpractice.anime_list.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 
 object MockData {
     fun getAnimeList() = listOf(
