@@ -2,8 +2,9 @@ package com.example.androidpractice.anime.data.repository
 
 import com.example.androidpractice.anime.data.api.AnimeApi
 import com.example.androidpractice.anime.data.dao.AnimeDao
-import com.example.androidpractice.anime.data.mapper.AnimeDtoToDomainMapper
 import com.example.androidpractice.anime.data.mapper.toDomain
+import com.example.androidpractice.anime.data.mapper.toDomainList
+import com.example.androidpractice.anime.data.mapper.toDomainOrNull
 import com.example.androidpractice.anime.data.mapper.toEntity
 import com.example.androidpractice.anime.domain.model.Anime
 import com.example.androidpractice.anime.domain.repository.AnimeRepository
@@ -15,20 +16,19 @@ import kotlinx.coroutines.withContext
 class AnimeRepositoryImpl(
     private val api: AnimeApi,
     private val animeDao: AnimeDao,
-    private val mapper: AnimeDtoToDomainMapper
 ) : AnimeRepository {
     override suspend fun getAnimeById(id: Int): Anime? = withContext(Dispatchers.IO) {
         val response = api.getAnimeById(id)
         val dto = response.data ?: throw Exception()
 
-        mapper.mapItem(dto)
+        dto.toDomainOrNull()
     }
 
     override suspend fun getAnimeTopList(): List<Anime> = withContext(Dispatchers.IO) {
         val response = api.getTopAnime()
         val dtoList = response.data.orEmpty()
 
-        mapper.mapList(dtoList)
+        dtoList.toDomainList()
     }
 
     override fun getFavouriteAnime(): Flow<List<Anime>> {
