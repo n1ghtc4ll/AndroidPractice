@@ -8,6 +8,6 @@ interface AnimeRepository {
     suspend fun getAnimeTopList(): List<Anime>
 
     fun getFavouriteAnime(): Flow<List<Anime>>
-    suspend fun addFavouriteAnime(id: Int)
+    suspend fun addFavouriteAnime(anime: Anime)
     suspend fun deleteFavouriteAnime(id: Int)
 }

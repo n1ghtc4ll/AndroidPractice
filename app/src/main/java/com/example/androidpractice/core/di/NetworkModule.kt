@@ -1,4 +1,4 @@
-package com.example.androidpractice.di
+package com.example.androidpractice.core.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import kotlinx.serialization.json.Json

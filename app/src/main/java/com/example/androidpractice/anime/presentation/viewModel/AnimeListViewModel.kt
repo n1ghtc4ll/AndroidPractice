@@ -7,8 +7,8 @@ import com.example.androidpractice.anime.domain.interactor.AnimeInteractor
 import com.example.androidpractice.anime.domain.model.Anime
 import com.example.androidpractice.anime.presentation.model.AnimeListViewState
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
-import com.example.androidpractice.navigation.Route
-import com.example.androidpractice.navigation.TopLevelBackStack
+import com.example.androidpractice.core.navigation.Route
+import com.example.androidpractice.core.navigation.TopLevelBackStack
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

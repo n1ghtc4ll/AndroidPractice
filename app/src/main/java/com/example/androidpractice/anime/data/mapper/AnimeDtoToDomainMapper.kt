@@ -6,7 +6,7 @@ import com.example.androidpractice.anime.domain.model.Anime
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
-class AnimeDtoToEntityMapper {
+class AnimeDtoToDomainMapper {
     fun mapList(list: List<AnimeDto>) : List<Anime> {
         return list.mapNotNull { anime -> mapItem(anime) }
     }

@@ -21,8 +21,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.androidpractice.anime.presentation.screen.AnimeDetailsDialog
 import com.example.androidpractice.anime.presentation.screen.AnimeListScreen
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
-import com.example.androidpractice.navigation.Route
-import com.example.androidpractice.navigation.TopLevelBackStack
+import com.example.androidpractice.core.navigation.Route
+import com.example.androidpractice.core.navigation.TopLevelBackStack
 import org.koin.java.KoinJavaComponent.inject
 
 interface TopLevelRoute: Route {

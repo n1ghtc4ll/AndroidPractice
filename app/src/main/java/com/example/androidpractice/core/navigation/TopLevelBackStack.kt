@@ -1,4 +1,4 @@
-package com.example.androidpractice.navigation
+package com.example.androidpractice.core.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf

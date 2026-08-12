@@ -2,8 +2,9 @@ package com.example.androidpractice
 
 import android.app.Application
 import com.example.androidpractice.anime.di.animeFeatureModule
-import com.example.androidpractice.di.mainModule
-import com.example.androidpractice.di.networkModule
+import com.example.androidpractice.core.di.dataModule
+import com.example.androidpractice.core.di.mainModule
+import com.example.androidpractice.core.di.networkModule
 
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -18,6 +19,7 @@ class App: Application() {
             modules(
                 mainModule,
                 networkModule,
+                dataModule,
                 animeFeatureModule
             )
         }

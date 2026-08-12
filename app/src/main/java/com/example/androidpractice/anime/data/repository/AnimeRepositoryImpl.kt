@@ -1,15 +1,21 @@
 package com.example.androidpractice.anime.data.repository
 
 import com.example.androidpractice.anime.data.api.AnimeApi
-import com.example.androidpractice.anime.data.mapper.AnimeDtoToEntityMapper
+import com.example.androidpractice.anime.data.dao.AnimeDao
+import com.example.androidpractice.anime.data.mapper.AnimeDtoToDomainMapper
+import com.example.androidpractice.anime.data.mapper.toDomain
+import com.example.androidpractice.anime.data.mapper.toEntity
 import com.example.androidpractice.anime.domain.model.Anime
 import com.example.androidpractice.anime.domain.repository.AnimeRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AnimeRepositoryImpl(
     private val api: AnimeApi,
-    private val mapper: AnimeDtoToEntityMapper
+    private val animeDao: AnimeDao,
+    private val mapper: AnimeDtoToDomainMapper
 ) : AnimeRepository {
     override suspend fun getAnimeById(id: Int): Anime? = withContext(Dispatchers.IO) {
         val response = api.getAnimeById(id)
@@ -23,5 +29,19 @@ class AnimeRepositoryImpl(
         val dtoList = response.data.orEmpty()
 
         mapper.mapList(dtoList)
+    }
+
+    override fun getFavouriteAnime(): Flow<List<Anime>> {
+        return animeDao.getFavouriteAnime().map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
+    override suspend fun addFavouriteAnime(anime: Anime) {
+        animeDao.insertFavouriteAnime(anime.toEntity())
+    }
+
+    override suspend fun deleteFavouriteAnime(id: Int) {
+        animeDao.deleteFavouriteAnime(id)
     }
 }

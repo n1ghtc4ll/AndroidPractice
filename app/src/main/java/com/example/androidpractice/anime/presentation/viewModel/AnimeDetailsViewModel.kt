@@ -3,7 +3,7 @@ package com.example.androidpractice.anime.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import com.example.androidpractice.anime.presentation.model.AnimeDetailsViewState
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
-import com.example.androidpractice.navigation.TopLevelBackStack
+import com.example.androidpractice.core.navigation.TopLevelBackStack
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
