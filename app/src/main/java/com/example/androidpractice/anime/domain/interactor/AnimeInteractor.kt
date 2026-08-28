@@ -16,4 +16,6 @@ class AnimeInteractor(
     suspend fun addFavouriteAnime(anime: Anime) = repository.addFavouriteAnime(anime)
 
     suspend fun deleteFavouriteAnime(id: Int) = repository.deleteFavouriteAnime(id)
+
+    suspend fun isAnimeFavourite(id: Int) = repository.isAnimeFavourite(id)
 }

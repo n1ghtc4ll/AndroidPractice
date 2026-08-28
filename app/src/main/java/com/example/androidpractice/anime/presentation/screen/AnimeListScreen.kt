@@ -31,13 +31,15 @@ import com.example.androidpractice.anime.presentation.model.AnimeListViewState
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AnimeListScreen() {
+fun AnimeListScreen(
+    onAnimeClick: (AnimeUiModel) -> Unit
+) {
     val viewModel = koinViewModel<AnimeListViewModel>()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
 
     AnimeListContent(
         state.state,
-        viewModel::onAnimeClick,
+        onAnimeClick,
         viewModel::onRetryClick
     )
 }

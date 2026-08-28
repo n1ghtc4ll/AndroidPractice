@@ -44,4 +44,8 @@ class AnimeRepositoryImpl(
     override suspend fun deleteFavouriteAnime(id: Int) {
         animeDao.deleteFavouriteAnime(id)
     }
+
+    override suspend fun isAnimeFavourite(id: Int): Boolean {
+        return animeDao.isAnimeFavourite(id)
+    }
 }

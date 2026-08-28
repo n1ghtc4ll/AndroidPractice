@@ -61,8 +61,8 @@ fun AnimeEntity.toDomain(): Anime {
         episodes = this.episodes,
         status = this.status,
         aired = AiredData(
-            from = this.airedFrom?.let { OffsetDateTime.parse(it).toLocalDate() },
-            to = this.airedTo?.let { OffsetDateTime.parse(it).toLocalDate() }
+            from = this.airedFrom?.let { LocalDate.parse(it) },
+            to = this.airedTo?.let { LocalDate.parse(it) }
         ),
         duration = this.duration,
         score = this.score,
@@ -75,7 +75,7 @@ private fun parseDateSafe(date: String?): LocalDate? {
     if (date.isNullOrEmpty()) return null
 
     return try {
-        OffsetDateTime.parse(date).toLocalDate()
+        LocalDate.parse(date)
     }
     catch (e: DateTimeParseException) {
         null

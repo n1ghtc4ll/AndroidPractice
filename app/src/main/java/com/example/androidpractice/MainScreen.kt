@@ -21,6 +21,8 @@ import androidx.navigation3.ui.NavDisplay
 import com.example.androidpractice.anime.presentation.screen.AnimeDetailsDialog
 import com.example.androidpractice.anime.presentation.screen.AnimeListScreen
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
+import com.example.androidpractice.anime.presentation.screen.AnimeFavouriteContent
+import com.example.androidpractice.anime.presentation.screen.AnimeFavouriteScreen
 import com.example.androidpractice.core.navigation.Route
 import com.example.androidpractice.core.navigation.TopLevelBackStack
 import org.koin.java.KoinJavaComponent.inject
@@ -67,15 +69,26 @@ fun MainScreen() {
             sceneStrategy = DialogSceneStrategy(),
             entryProvider = entryProvider {
                 entry<MainList> {
-                    AnimeListScreen()
+                    AnimeListScreen(
+                        onAnimeClick = { anime ->
+                            topLevelBackStack.add(AnimeDetails(anime))
+                        }
+                    )
                 }
                 entry<Favourite> {
-
+                    AnimeFavouriteScreen(
+                        onAnimeClick = { anime ->
+                            topLevelBackStack.add(AnimeDetails(anime))
+                        }
+                    )
                 }
                 entry<AnimeDetails>(
                     metadata = DialogSceneStrategy.dialog(DialogProperties())
                 ) {
-                    AnimeDetailsDialog(it.anime)
+                    AnimeDetailsDialog(
+                        anime = it.anime,
+                        onDismiss = { topLevelBackStack.removeLast() }
+                    )
                 }
             }
         )

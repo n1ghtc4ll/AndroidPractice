@@ -45,14 +45,15 @@ import org.koin.core.parameter.parametersOf
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeDetailsDialog(
-    anime: AnimeUiModel
+    anime: AnimeUiModel,
+    onDismiss: () -> Unit
 ) {
     val viewModel = koinViewModel<AnimeDetailsViewModel> {
         parametersOf(anime)
     }
     val state by viewModel.viewState.collectAsStateWithLifecycle()
 
-    ModalBottomSheet(onDismissRequest = { viewModel.onBack() }) {
+    ModalBottomSheet(onDismissRequest = onDismiss) {
         AnimeDetailsContent(state, viewModel::onFavouriteChanged)
     }
 }
@@ -60,7 +61,7 @@ fun AnimeDetailsDialog(
 @Composable
 fun AnimeDetailsContent(
     state: AnimeDetailsViewState,
-    onFavouriteChanged: (Boolean) -> Unit = {}
+    onFavouriteChanged: () -> Unit = {}
 ) {
 
     ConstraintLayout(
@@ -89,7 +90,7 @@ fun AnimeDetailsContent(
             )
 
             IconButton(
-                onClick = { onFavouriteChanged(state.isFavourite) },
+                onClick = { onFavouriteChanged() },
                 modifier = Modifier.size(40.dp)
             ) {
                 Icon(
