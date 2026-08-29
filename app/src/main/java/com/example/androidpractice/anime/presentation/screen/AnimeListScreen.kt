@@ -60,6 +60,16 @@ fun AnimeListContent(
             }
         }
 
+        is AnimeListViewState.State.Empty -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "По запросу ничего не найдено")
+            }
+        }
+
         is AnimeListViewState.State.Error -> {
             Column(
                 modifier = Modifier.fillMaxSize(),

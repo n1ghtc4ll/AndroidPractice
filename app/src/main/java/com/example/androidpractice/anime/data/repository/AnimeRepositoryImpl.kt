@@ -2,20 +2,26 @@ package com.example.androidpractice.anime.data.repository
 
 import com.example.androidpractice.anime.data.api.AnimeApi
 import com.example.androidpractice.anime.data.dao.AnimeDao
+import com.example.androidpractice.anime.data.datastore.AnimeFilterDataStore
 import com.example.androidpractice.anime.data.mapper.toDomain
 import com.example.androidpractice.anime.data.mapper.toDomainList
 import com.example.androidpractice.anime.data.mapper.toDomainOrNull
 import com.example.androidpractice.anime.data.mapper.toEntity
+import com.example.androidpractice.anime.data.mapper.toFilterSetting
 import com.example.androidpractice.anime.domain.model.Anime
+import com.example.androidpractice.anime.domain.model.AnimeFilterSettings
+import com.example.androidpractice.anime.domain.model.FilterSetting
 import com.example.androidpractice.anime.domain.repository.AnimeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class AnimeRepositoryImpl(
     private val api: AnimeApi,
     private val animeDao: AnimeDao,
+    private val dataStore: AnimeFilterDataStore
 ) : AnimeRepository {
     override suspend fun getAnimeById(id: Int): Anime? = withContext(Dispatchers.IO) {
         val response = api.getAnimeById(id)
@@ -47,5 +53,27 @@ class AnimeRepositoryImpl(
 
     override suspend fun isAnimeFavourite(id: Int): Boolean {
         return animeDao.isAnimeFavourite(id)
+    }
+
+    override suspend fun saveFilters(settings: AnimeFilterSettings) {
+        dataStore.saveFilters(
+            categoryApi = settings.category.apiValue,
+            releaseTypeApi = settings.category.apiValue,
+            ageRatingApi = settings.category.apiValue
+        )
+    }
+
+    override fun getFilters(): Flow<AnimeFilterSettings> {
+        return combine(
+            dataStore.categoryFlow,
+            dataStore.releaseTypeFlow,
+            dataStore.ageRatingFlow
+        ) { categoryStr, releaseTypeStr, ageRatingStr ->
+            AnimeFilterSettings(
+                category = categoryStr.toFilterSetting(FilterSetting.Category.ALL),
+                releaseType = releaseTypeStr.toFilterSetting(FilterSetting.ReleaseType.ALL),
+                ageRating = ageRatingStr.toFilterSetting(FilterSetting.AgeRating.ALL)
+            )
+        }
     }
 }
