@@ -2,9 +2,10 @@ package com.example.androidpractice.anime.domain.model
 
 
 data class AnimeFilterSettings(
-    val category: FilterSetting.Category,
-    val releaseType: FilterSetting.ReleaseType,
-    val ageRating: FilterSetting.AgeRating
+    val mainFilter: FilterSetting.Category = FilterSetting.Category.ALL,
+    val releaseType: FilterSetting.ReleaseType = FilterSetting.ReleaseType.ALL,
+    val ageRating: FilterSetting.AgeRating = FilterSetting.AgeRating.ALL,
+    val isSfw: Boolean = true
 )
 
 sealed interface FilterSetting {

@@ -30,15 +30,25 @@ class AnimeRepositoryImpl(
         dto.toDomainOrNull()
     }
 
-    override suspend fun getAnimeTopList(): List<Anime> = withContext(Dispatchers.IO) {
-        val response = api.getTopAnime()
+    override suspend fun getAnimeTopList(
+        filter: AnimeFilterSettings
+    ): List<Anime> = withContext(Dispatchers.IO) {
+        val response = api.getTopAnime(
+            type = filter.releaseType.apiValue,
+            mainFilter = filter.mainFilter.apiValue,
+            rating = filter.ageRating.apiValue,
+            sfw = filter.isSfw
+        )
         val dtoList = response.data.orEmpty()
 
         dtoList.toDomainList()
     }
 
-    override fun getFavouriteAnime(): Flow<List<Anime>> {
-        return animeDao.getFavouriteAnime().map { entities ->
+    override fun getFavouriteAnime(filter: AnimeFilterSettings): Flow<List<Anime>> {
+        return animeDao.getFavouriteAnime(
+            type = filter.releaseType.apiValue,
+            rating = filter.ageRating.apiValue
+        ).map { entities ->
             entities.map { it.toDomain() }
         }
     }
@@ -57,20 +67,20 @@ class AnimeRepositoryImpl(
 
     override suspend fun saveFilters(settings: AnimeFilterSettings) {
         dataStore.saveFilters(
-            categoryApi = settings.category.apiValue,
-            releaseTypeApi = settings.category.apiValue,
-            ageRatingApi = settings.category.apiValue
+            mainFilterApi = settings.mainFilter.apiValue,
+            releaseTypeApi = settings.mainFilter.apiValue,
+            ageRatingApi = settings.mainFilter.apiValue
         )
     }
 
     override fun getFilters(): Flow<AnimeFilterSettings> {
         return combine(
-            dataStore.categoryFlow,
+            dataStore.mainFilterFlow,
             dataStore.releaseTypeFlow,
             dataStore.ageRatingFlow
         ) { categoryStr, releaseTypeStr, ageRatingStr ->
             AnimeFilterSettings(
-                category = categoryStr.toFilterSetting(FilterSetting.Category.ALL),
+                mainFilter = categoryStr.toFilterSetting(FilterSetting.Category.ALL),
                 releaseType = releaseTypeStr.toFilterSetting(FilterSetting.ReleaseType.ALL),
                 ageRating = ageRatingStr.toFilterSetting(FilterSetting.AgeRating.ALL)
             )

@@ -12,6 +12,7 @@ data class Anime(
     val status: String,
     val aired: AiredData?,
     val duration: String,
+    val rating: String?,
     val score: Double,
     val synopsis: String,
     val genres: List<String>,

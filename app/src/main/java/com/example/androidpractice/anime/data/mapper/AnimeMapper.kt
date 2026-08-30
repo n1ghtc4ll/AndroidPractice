@@ -27,6 +27,7 @@ fun AnimeDto.toDomainOrNull(): Anime? {
             to = parseDateSafe(this.aired?.to)
         ),
         duration = this.duration ?: "Неизвестно",
+        rating = this.rating,
         score = this.score ?: 0.0,
         synopsis = this.synopsis ?: "Описание недоступно.",
         genres = this.genres?.mapNotNull { it.name } ?: emptyList()
@@ -45,6 +46,7 @@ fun Anime.toEntity(): AnimeEntity {
         airedFrom = this.aired?.from?.toString(),
         airedTo = this.aired?.to?.toString(),
         duration = this.duration,
+        rating = this.rating,
         score = this.score,
         synopsis = this.synopsis,
         genres = this.genres.joinToString()
@@ -65,6 +67,7 @@ fun AnimeEntity.toDomain(): Anime {
             to = this.airedTo?.let { LocalDate.parse(it) }
         ),
         duration = this.duration,
+        rating = this.rating,
         score = this.score,
         synopsis = this.synopsis,
         genres = this.genres.split(", ")

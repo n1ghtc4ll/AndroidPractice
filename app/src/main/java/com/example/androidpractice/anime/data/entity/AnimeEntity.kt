@@ -27,6 +27,8 @@ data class AnimeEntity(
 
     @ColumnInfo(name = "duration") val duration: String,
 
+    @ColumnInfo(name = "rating") val rating: String?,
+
     @ColumnInfo(name = "score") val score: Double,
 
     @ColumnInfo(name = "synopsis") val synopsis: String,

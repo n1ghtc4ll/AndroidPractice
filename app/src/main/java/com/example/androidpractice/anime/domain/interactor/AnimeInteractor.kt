@@ -8,10 +8,14 @@ import kotlinx.coroutines.flow.Flow
 class AnimeInteractor(
     private val repository: AnimeRepository
 ) {
-    suspend fun getAnimeTopList() = repository.getAnimeTopList()
+    suspend fun getAnimeTopList(
+        filter: AnimeFilterSettings = AnimeFilterSettings()
+    ) = repository.getAnimeTopList(filter)
     suspend fun getAnimeById(id: Int) = repository.getAnimeById(id)
 
-    fun getFavouriteAnime(): Flow<List<Anime>> = repository.getFavouriteAnime()
+    fun getFavouriteAnime(
+        filter: AnimeFilterSettings = AnimeFilterSettings()
+    ): Flow<List<Anime>> = repository.getFavouriteAnime(filter)
     suspend fun addFavouriteAnime(anime: Anime) = repository.addFavouriteAnime(anime)
     suspend fun deleteFavouriteAnime(id: Int) = repository.deleteFavouriteAnime(id)
 

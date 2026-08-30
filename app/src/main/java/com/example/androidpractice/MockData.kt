@@ -14,6 +14,7 @@ object MockData {
         status = "",
         aired = null,
         duration = "",
+        rating = null,
         score = 0.0,
         synopsis = "",
         genres = emptyList()

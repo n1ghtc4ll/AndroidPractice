@@ -21,6 +21,7 @@ data class AnimeDto(
     @SerialName("status") val status: String?,
     @SerialName("aired") val aired: AiredDto?,
     @SerialName("duration") val duration: String?,
+    @SerialName("rating") val rating: String?,
     @SerialName("score") val score: Double?,
     @SerialName("synopsis") val synopsis: String?,
     @SerialName("genres") val genres: List<Genre>?,

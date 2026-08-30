@@ -9,8 +9,13 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AnimeDao {
-    @Query("SELECT * FROM favourite_anime")
-    fun getFavouriteAnime(): Flow<List<AnimeEntity>>
+    @Query("SELECT * FROM favourite_anime WHERE type = :type AND rating = :rating")
+    fun getFavouriteAnime(
+        type: String?,
+        //filter: String?,
+        rating: String?,
+        //sfw: Boolean?
+    ): Flow<List<AnimeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavouriteAnime(anime: AnimeEntity)
