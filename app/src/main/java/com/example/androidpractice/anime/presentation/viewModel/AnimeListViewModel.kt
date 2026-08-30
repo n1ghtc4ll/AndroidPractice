@@ -3,12 +3,12 @@ package com.example.androidpractice.anime.presentation.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidpractice.anime.domain.interactor.AnimeInteractor
-import com.example.androidpractice.anime.domain.model.Anime
+import com.example.androidpractice.anime.domain.model.AnimeFilterSettings
 import com.example.androidpractice.anime.presentation.mapper.toUiModels
 import com.example.androidpractice.anime.presentation.model.AnimeListViewState
-import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,11 @@ class AnimeListViewModel(
 
     private fun loadAnimeList() {
         viewModelScope.launch {
-            updateState(AnimeListViewState.State.Loading)
+            interactor.getFilters().collectLatest { activeFilters ->
+                mutableState.update {
+                    it.copy(state = AnimeListViewState.State.Loading, filters = activeFilters)
+                }
+            }
 
             try {
                 val animeList = interactor.getAnimeTopList()
@@ -34,6 +38,11 @@ class AnimeListViewModel(
                 updateState(AnimeListViewState.State.Error(e.localizedMessage ?: ""))
             }
         }
+    }
+
+    suspend fun updateFilters(filters: AnimeFilterSettings) {
+        interactor.saveFilters(filters)
+        mutableState.update { it.copy(filters = filters) }
     }
 
     fun onRetryClick() {

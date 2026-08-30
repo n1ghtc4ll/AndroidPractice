@@ -68,8 +68,8 @@ class AnimeRepositoryImpl(
     override suspend fun saveFilters(settings: AnimeFilterSettings) {
         dataStore.saveFilters(
             mainFilterApi = settings.mainFilter.apiValue,
-            releaseTypeApi = settings.mainFilter.apiValue,
-            ageRatingApi = settings.mainFilter.apiValue
+            releaseTypeApi = settings.releaseType.apiValue,
+            ageRatingApi = settings.ageRating.apiValue
         )
     }
 

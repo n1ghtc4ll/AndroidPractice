@@ -1,7 +1,10 @@
 package com.example.androidpractice.anime.presentation.model
 
+import com.example.androidpractice.anime.domain.model.AnimeFilterSettings
+
 data class AnimeFavouriteViewState(
-    val state: State = State.Loading
+    val state: State = State.Loading,
+    val filters: AnimeFilterSettings = AnimeFilterSettings()
 ) {
     sealed interface State {
         object Loading : State
