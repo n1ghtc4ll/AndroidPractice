@@ -38,7 +38,7 @@ import coil3.compose.AsyncImage
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.MockData
 import com.example.androidpractice.anime.presentation.model.AnimeDetailsViewState
-import com.example.androidpractice.anime.presentation.viewModel.AnimeDetailsViewModel
+import com.example.androidpractice.anime.presentation.viewmodel.AnimeDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 

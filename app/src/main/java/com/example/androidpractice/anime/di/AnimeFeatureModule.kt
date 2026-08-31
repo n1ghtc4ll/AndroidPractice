@@ -5,9 +5,9 @@ import com.example.androidpractice.anime.data.datastore.AnimeFilterDataStore
 import com.example.androidpractice.anime.data.repository.AnimeRepositoryImpl
 import com.example.androidpractice.anime.domain.interactor.AnimeInteractor
 import com.example.androidpractice.anime.domain.repository.AnimeRepository
-import com.example.androidpractice.anime.presentation.viewModel.AnimeDetailsViewModel
-import com.example.androidpractice.anime.presentation.viewModel.AnimeFavouriteViewModel
-import com.example.androidpractice.anime.presentation.viewModel.AnimeListViewModel
+import com.example.androidpractice.anime.presentation.viewmodel.AnimeDetailsViewModel
+import com.example.androidpractice.anime.presentation.viewmodel.AnimeFavouriteViewModel
+import com.example.androidpractice.anime.presentation.viewmodel.AnimeListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module

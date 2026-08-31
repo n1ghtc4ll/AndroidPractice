@@ -4,44 +4,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.androidpractice.anime.presentation.viewmodel.AnimeListViewModel
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
+import com.example.androidpractice.MockData
 import com.example.androidpractice.anime.presentation.components.AnimeList
 import com.example.androidpractice.anime.presentation.model.AnimeListState
-import com.example.androidpractice.anime.presentation.model.AnimeUiModel
-import com.example.androidpractice.anime.presentation.viewmodel.AnimeFavouriteViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun AnimeFavouriteScreen(
+fun AnimeMainListScreen(
     onAnimeClick: (AnimeUiModel) -> Unit
 ) {
-    val viewModel = koinViewModel<AnimeFavouriteViewModel>()
+    val viewModel = koinViewModel<AnimeListViewModel>()
     val state by viewModel.viewState.collectAsStateWithLifecycle()
 
-    AnimeFavouriteContent(
-        state = state.state,
-        onAnimeClick = onAnimeClick,
-        onRetryClick = viewModel::onRetryClick
+    AnimeMainListContent(
+        state.state,
+        onAnimeClick,
+        viewModel::onRetryClick
     )
 }
 
 @Composable
-fun AnimeFavouriteContent(
+fun AnimeMainListContent(
     state: AnimeListState,
     onAnimeClick: (AnimeUiModel) -> Unit = {},
     onRetryClick: () -> Unit = {}
 ) {
     AnimeList(
         state = state,
-        emptyMessage = "Вы пока ничего не добавили в избранное",
+        emptyMessage = "По запросу ничего не найдено",
         onAnimeClick = onAnimeClick,
         onRetryClick = onRetryClick
     )
 }
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(showBackground = true)
 @Composable
-fun AnimeFavouriteContentPreview() {
-    AnimeFavouriteContent(
-        AnimeListState.Empty
+fun AnimeMainListScreenPreview() {
+    AnimeMainListContent(
+        AnimeListState.Success(MockData.getAnimeList())
     )
 }

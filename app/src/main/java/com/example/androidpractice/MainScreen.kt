@@ -19,9 +19,8 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
 import com.example.androidpractice.anime.presentation.screen.AnimeDetailsDialog
-import com.example.androidpractice.anime.presentation.screen.AnimeListScreen
+import com.example.androidpractice.anime.presentation.screen.AnimeMainListScreen
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
-import com.example.androidpractice.anime.presentation.screen.AnimeFavouriteContent
 import com.example.androidpractice.anime.presentation.screen.AnimeFavouriteScreen
 import com.example.androidpractice.core.navigation.Route
 import com.example.androidpractice.core.navigation.TopLevelBackStack
@@ -69,7 +68,7 @@ fun MainScreen() {
             sceneStrategy = DialogSceneStrategy(),
             entryProvider = entryProvider {
                 entry<MainList> {
-                    AnimeListScreen(
+                    AnimeMainListScreen(
                         onAnimeClick = { anime ->
                             topLevelBackStack.add(AnimeDetails(anime))
                         }

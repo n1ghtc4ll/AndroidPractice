@@ -1,4 +1,4 @@
-package com.example.androidpractice.anime.presentation.screen
+package com.example.androidpractice.anime.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,39 +17,19 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.androidpractice.anime.presentation.viewModel.AnimeListViewModel
-import com.example.androidpractice.anime.presentation.model.AnimeUiModel
-import com.example.androidpractice.MockData
 import com.example.androidpractice.anime.presentation.model.AnimeListState
-import com.example.androidpractice.anime.presentation.model.AnimeListViewState
-import org.koin.compose.viewmodel.koinViewModel
+import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 
 @Composable
-fun AnimeListScreen(
-    onAnimeClick: (AnimeUiModel) -> Unit
-) {
-    val viewModel = koinViewModel<AnimeListViewModel>()
-    val state by viewModel.viewState.collectAsStateWithLifecycle()
-
-    AnimeListContent(
-        state.state,
-        onAnimeClick,
-        viewModel::onRetryClick
-    )
-}
-
-@Composable
-fun AnimeListContent(
+fun AnimeList(
     state: AnimeListState,
-    onAnimeClick: (AnimeUiModel) -> Unit = {},
-    onRetryClick: () -> Unit = {}
+    emptyMessage: String,
+    onAnimeClick: (AnimeUiModel) -> Unit,
+    onRetryClick: () -> Unit
 ) {
     when (state) {
         is AnimeListState.Loading -> {
@@ -67,7 +47,7 @@ fun AnimeListContent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "По запросу ничего не найдено")
+                Text(text = emptyMessage)
             }
         }
 
@@ -138,12 +118,4 @@ fun AnimeListItem(
 
         HorizontalDivider(modifier = Modifier.padding(top = 4.dp))
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AnimeListScreenPreview() {
-    AnimeListContent(
-        AnimeListState.Success(MockData.getAnimeList())
-    )
 }
