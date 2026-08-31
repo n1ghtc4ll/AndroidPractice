@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.androidpractice.anime.presentation.viewModel.AnimeListViewModel
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.MockData
+import com.example.androidpractice.anime.presentation.model.AnimeListState
 import com.example.androidpractice.anime.presentation.model.AnimeListViewState
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -46,12 +47,12 @@ fun AnimeListScreen(
 
 @Composable
 fun AnimeListContent(
-    state: AnimeListViewState.State,
+    state: AnimeListState,
     onAnimeClick: (AnimeUiModel) -> Unit = {},
     onRetryClick: () -> Unit = {}
 ) {
     when (state) {
-        is AnimeListViewState.State.Loading -> {
+        is AnimeListState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -60,7 +61,7 @@ fun AnimeListContent(
             }
         }
 
-        is AnimeListViewState.State.Empty -> {
+        is AnimeListState.Empty -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -70,7 +71,7 @@ fun AnimeListContent(
             }
         }
 
-        is AnimeListViewState.State.Error -> {
+        is AnimeListState.Error -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -82,7 +83,7 @@ fun AnimeListContent(
             }
         }
 
-        is AnimeListViewState.State.Success -> {
+        is AnimeListState.Success -> {
             LazyColumn {
                 state.data.forEach { anime ->
                     item(key = anime.id) {
@@ -143,6 +144,6 @@ fun AnimeListItem(
 @Composable
 fun AnimeListScreenPreview() {
     AnimeListContent(
-        AnimeListViewState.State.Success(MockData.getAnimeList())
+        AnimeListState.Success(MockData.getAnimeList())
     )
 }

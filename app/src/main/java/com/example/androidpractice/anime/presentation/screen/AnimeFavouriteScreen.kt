@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.androidpractice.anime.presentation.model.AnimeFavouriteViewState
+import com.example.androidpractice.anime.presentation.model.AnimeListState
 import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 import com.example.androidpractice.anime.presentation.viewModel.AnimeFavouriteViewModel
 import org.koin.compose.viewmodel.koinViewModel
@@ -39,12 +40,12 @@ fun AnimeFavouriteScreen(
 
 @Composable
 fun AnimeFavouriteContent(
-    state: AnimeFavouriteViewState.State,
+    state: AnimeListState,
     onAnimeClick: (AnimeUiModel) -> Unit = {},
     onRetryClick: () -> Unit = {}
 ) {
     when (state) {
-        is AnimeFavouriteViewState.State.Loading -> {
+        is AnimeListState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -52,7 +53,7 @@ fun AnimeFavouriteContent(
                 CircularProgressIndicator()
             }
         }
-        is AnimeFavouriteViewState.State.Empty -> {
+        is AnimeListState.Empty -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -61,7 +62,7 @@ fun AnimeFavouriteContent(
                 Text(text = "Вы пока ничего не добавили в избранное")
             }
         }
-        is AnimeFavouriteViewState.State.Error -> {
+        is AnimeListState.Error -> {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
@@ -72,7 +73,7 @@ fun AnimeFavouriteContent(
                 Button(onClick = onRetryClick) { Text("Повторить") }
             }
         }
-        is AnimeFavouriteViewState.State.Success -> {
+        is AnimeListState.Success -> {
             LazyColumn {
                 state.data.forEach { anime ->
                     item(key = anime.id) {
@@ -88,6 +89,6 @@ fun AnimeFavouriteContent(
 @Composable
 fun AnimeFavouriteContentPreview() {
     AnimeFavouriteContent(
-        AnimeFavouriteViewState.State.Empty
+        AnimeListState.Empty
     )
 }

@@ -6,6 +6,7 @@ import com.example.androidpractice.anime.domain.interactor.AnimeInteractor
 import com.example.androidpractice.anime.domain.model.AnimeFilterSettings
 import com.example.androidpractice.anime.presentation.mapper.toUiModels
 import com.example.androidpractice.anime.presentation.model.AnimeFavouriteViewState
+import com.example.androidpractice.anime.presentation.model.AnimeListState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,24 +30,24 @@ class AnimeFavouriteViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun loadFavouriteList() {
         viewModelScope.launch {
-            updateState(AnimeFavouriteViewState.State.Loading)
+            updateState(AnimeListState.Loading)
 
             animeInteractor.getFilters()
                 .flatMapLatest { activeFilters ->
                     mutableState.update {
-                        it.copy(state = AnimeFavouriteViewState.State.Loading, filters = activeFilters)
+                        it.copy(state = AnimeListState.Loading, filters = activeFilters)
                     }
                     animeInteractor.getFavouriteAnime(activeFilters)
                 }
                 .catch { exception ->
                     val errorMessage = exception.localizedMessage ?: "Неизвестная ошибка БД"
-                    updateState(AnimeFavouriteViewState.State.Error(errorMessage))
+                    updateState(AnimeListState.Error(errorMessage))
                 }
                 .collectLatest { domainList ->
                     if (domainList.isEmpty())
-                        updateState(AnimeFavouriteViewState.State.Empty)
+                        updateState(AnimeListState.Empty)
                     else
-                        updateState(AnimeFavouriteViewState.State.Success(domainList.toUiModels()))
+                        updateState(AnimeListState.Success(domainList.toUiModels()))
                 }
         }
     }
@@ -58,5 +59,5 @@ class AnimeFavouriteViewModel(
 
     fun onRetryClick() = loadFavouriteList()
 
-    fun updateState(state: AnimeFavouriteViewState.State) = mutableState.update { it.copy(state = state) }
+    fun updateState(state: AnimeListState) = mutableState.update { it.copy(state = state) }
 }
