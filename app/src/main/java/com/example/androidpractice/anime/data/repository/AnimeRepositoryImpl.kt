@@ -1,5 +1,6 @@
 package com.example.androidpractice.anime.data.repository
 
+import android.util.Log
 import com.example.androidpractice.anime.data.api.AnimeApi
 import com.example.androidpractice.anime.data.dao.AnimeDao
 import com.example.androidpractice.anime.data.datastore.AnimeFilterDataStore
@@ -33,11 +34,11 @@ class AnimeRepositoryImpl(
     override suspend fun getAnimeTopList(
         filter: AnimeFilterSettings
     ): List<Anime> = withContext(Dispatchers.IO) {
+        Log.d(filter.toString(), "Фильтр")
         val response = api.getTopAnime(
             type = filter.releaseType.apiValue,
             mainFilter = filter.mainFilter.apiValue,
             rating = filter.ageRating.apiValue,
-            sfw = filter.isSfw
         )
         val dtoList = response.data.orEmpty()
 
@@ -53,16 +54,16 @@ class AnimeRepositoryImpl(
         }
     }
 
-    override suspend fun addFavouriteAnime(anime: Anime) {
+    override suspend fun addFavouriteAnime(anime: Anime) = withContext(Dispatchers.IO) {
         animeDao.insertFavouriteAnime(anime.toEntity())
     }
 
-    override suspend fun deleteFavouriteAnime(id: Int) {
+    override suspend fun deleteFavouriteAnime(id: Int) = withContext(Dispatchers.IO) {
         animeDao.deleteFavouriteAnime(id)
     }
 
-    override suspend fun isAnimeFavourite(id: Int): Boolean {
-        return animeDao.isAnimeFavourite(id)
+    override suspend fun isAnimeFavourite(id: Int): Boolean = withContext(Dispatchers.IO) {
+        return@withContext animeDao.isAnimeFavourite(id)
     }
 
     override suspend fun saveFilters(settings: AnimeFilterSettings) {

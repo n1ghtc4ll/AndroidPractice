@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
@@ -26,6 +27,7 @@ import com.example.androidpractice.anime.presentation.model.AnimeUiModel
 
 @Composable
 fun AnimeList(
+    modifier: Modifier = Modifier,
     state: AnimeListState,
     emptyMessage: String,
     onAnimeClick: (AnimeUiModel) -> Unit,
@@ -34,7 +36,7 @@ fun AnimeList(
     when (state) {
         is AnimeListState.Loading -> {
             Box(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -43,7 +45,7 @@ fun AnimeList(
 
         is AnimeListState.Empty -> {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -53,7 +55,7 @@ fun AnimeList(
 
         is AnimeListState.Error -> {
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -64,11 +66,14 @@ fun AnimeList(
         }
 
         is AnimeListState.Success -> {
-            LazyColumn {
-                state.data.forEach { anime ->
-                    item(key = anime.id) {
-                        AnimeListItem(anime) { onAnimeClick(anime) }
-                    }
+            LazyColumn(
+                modifier = modifier
+            ) {
+                itemsIndexed(
+                    items = state.data,
+                    key = { index, anime -> "${anime.id}-$index" },
+                ) { _, anime ->
+                    AnimeListItem(anime) { onAnimeClick(anime) }
                 }
             }
         }

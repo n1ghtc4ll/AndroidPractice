@@ -12,7 +12,6 @@ interface AnimeApi {
         @Query("type") type: String?,
         @Query("filter") mainFilter: String?,
         @Query("rating") rating: String?,
-        @Query("sfw") sfw: Boolean?
     ): Response<List<AnimeDto>>
 
     @GET("anime/{id}")

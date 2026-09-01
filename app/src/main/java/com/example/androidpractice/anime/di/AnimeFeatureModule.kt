@@ -7,7 +7,7 @@ import com.example.androidpractice.anime.domain.interactor.AnimeInteractor
 import com.example.androidpractice.anime.domain.repository.AnimeRepository
 import com.example.androidpractice.anime.presentation.viewmodel.AnimeDetailsViewModel
 import com.example.androidpractice.anime.presentation.viewmodel.AnimeFavouriteViewModel
-import com.example.androidpractice.anime.presentation.viewmodel.AnimeListViewModel
+import com.example.androidpractice.anime.presentation.viewmodel.AnimeMainListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -22,7 +22,7 @@ val animeFeatureModule = module {
 
     single { AnimeInteractor(get()) }
 
-    viewModel { AnimeListViewModel(get()) }
+    viewModel { AnimeMainListViewModel(get()) }
     viewModel { AnimeDetailsViewModel(get(), get()) }
     viewModel { AnimeFavouriteViewModel(get()) }
 }

@@ -7,7 +7,7 @@ import com.example.androidpractice.anime.data.entity.AnimeEntity
 
 @Database(
     entities = [AnimeEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase: RoomDatabase() {

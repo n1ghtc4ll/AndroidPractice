@@ -65,7 +65,7 @@ fun MainScreen() {
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator()
             ),
-            sceneStrategy = DialogSceneStrategy(),
+            sceneStrategies = listOf(DialogSceneStrategy()),
             entryProvider = entryProvider {
                 entry<MainList> {
                     AnimeMainListScreen(
