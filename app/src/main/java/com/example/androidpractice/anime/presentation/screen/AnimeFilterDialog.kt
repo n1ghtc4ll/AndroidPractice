@@ -28,18 +28,24 @@ import com.example.androidpractice.anime.domain.model.FilterSetting
 
 @Composable
 fun AnimeFilterDialog(
+    modifier: Modifier = Modifier,
     filters: AnimeFilterSettings,
     onFiltersChanged: (AnimeFilterSettings) -> Unit,
-    //onApply: () -> Unit,
     onDismiss: () -> Unit
 ) {
     Dialog(
         onDismissRequest = onDismiss
     ) {
-        Surface(modifier = Modifier.clip(RoundedCornerShape(16.dp))) {
+        Surface(
+            modifier = modifier,
+            shape = RoundedCornerShape(16.dp)
+        ) {
             AnimeFilterContent(
                 filters = filters,
-                onFiltersChanged = onFiltersChanged,
+                onFiltersChanged = {
+                    onFiltersChanged(it)
+                    onDismiss()
+                }
             )
         }
     }
@@ -48,12 +54,14 @@ fun AnimeFilterDialog(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimeFilterContent(
+    modifier: Modifier = Modifier,
     filters: AnimeFilterSettings,
     onFiltersChanged: (AnimeFilterSettings) -> Unit,
-    //onApply
 ) {
+    var tempFilters by remember { mutableStateOf(filters) }
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -61,34 +69,37 @@ fun AnimeFilterContent(
 
         FilterDropdownMenu(
             entries = FilterSetting.Category.entries.toTypedArray(),
-            selectedValue = filters.mainFilter,
+            selectedValue = tempFilters.mainFilter,
             onValueSelected = { newCategory ->
-                onFiltersChanged(filters.copy(mainFilter = newCategory))
+                tempFilters = tempFilters.copy(mainFilter = newCategory)
             }
         )
 
         FilterDropdownMenu(
             entries = FilterSetting.ReleaseType.entries.toTypedArray(),
-            selectedValue = filters.releaseType,
+            selectedValue = tempFilters.releaseType,
             onValueSelected = { newRelease ->
-                onFiltersChanged(filters.copy(releaseType = newRelease))
+                tempFilters = tempFilters.copy(releaseType = newRelease)
             }
         )
 
         FilterDropdownMenu(
             entries = FilterSetting.AgeRating.entries.toTypedArray(),
-            selectedValue = filters.ageRating,
+            selectedValue = tempFilters.ageRating,
             onValueSelected = { newAgeRating ->
-                onFiltersChanged(filters.copy(ageRating = newAgeRating))
+                tempFilters = tempFilters.copy(ageRating = newAgeRating)
             }
         )
 
-        Button(onClick = {}) { }
+        Button(onClick = { onFiltersChanged(tempFilters) }) {
+            Text(text = "Применить")
+        }
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> FilterDropdownMenu(
+    modifier: Modifier = Modifier,
     entries: Array<T>,
     selectedValue: T,
     onValueSelected: (T) -> Unit
@@ -96,6 +107,7 @@ fun <T> FilterDropdownMenu(
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
+        modifier = modifier,
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
@@ -127,6 +139,6 @@ fun <T> FilterDropdownMenu(
 fun AnimeFilterContentPreview() {
     AnimeFilterContent(
         filters = AnimeFilterSettings(),
-        onFiltersChanged = {  }
+        onFiltersChanged = { }
     )
 }
